@@ -10,4 +10,4 @@ Trabajo practico sobre la influencia de la localia en el futbol argentino
 
 -Francisco Pando: franciscopando
 
--Sebastián Chernomoretz:
+-Sebastián Chernomoretz:cherno559
