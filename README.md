@@ -4,7 +4,7 @@ Trabajo practico sobre la influencia de la localia en el futbol argentino
 
 -Santiago Leguizamon: santiagoleguizamon10
 
--Salvador Lanus: salvalanus005
+-Salvador Lanus: salvalanus05
 
 -Benjamín Aranda: benjaaranda23
 
