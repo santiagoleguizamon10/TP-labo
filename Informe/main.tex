@@ -1,0 +1,118 @@
+\documentclass[12pt,a4paper]{article}
+
+% Plantilla académica para Overleaf. Compilar con pdfLaTeX.
+% Reemplazá los textos entre corchetes por los datos de tu trabajo.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3cm,right=3cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue,citecolor=black}
+\setlength{\parindent}{1.0cm}
+\setlength{\parskip}{0.25em}
+\onehalfspacing
+\setlist{topsep=0.2em,itemsep=0.2em}
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection.}{0.4em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{0.4em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.4em}
+
+% Editá estos datos para completar la portada.
+\newcommand{\institucion}{Universidad de Buenos Aires}
+\newcommand{\facultad}{Facultad de Ciencias Económicas}
+\newcommand{\carrera}{Tecnicatura Universitaria en Gestión y Análisis de Datos en Organizaciones}
+\newcommand{\tituloTrabajo}{Trabajo Práctico Grupal}
+\newcommand{\subtituloTrabajo}{La influencia de la localía en el fútbol argentino}
+
+\begin{document}
+
+% PORTADA
+\thispagestyle{empty}
+\begin{center}
+    {\large\bfseries \institucion}\\[0.25em]
+    {\large \facultad}\\[0.25em]
+    {\normalsize \carrera}
+\end{center}
+
+\vspace{1.4cm}
+\noindent\rule{\textwidth}{0.7pt}
+
+\vspace{1.5cm}
+\begin{center}
+    {\LARGE\bfseries \tituloTrabajo}\\[0.8em]
+    {\large \subtituloTrabajo}
+\end{center}
+
+\vspace{1.4cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5em}
+
+% Reemplazá cada valor entre corchetes. Agregá o quitá filas si hace falta.
+\renewcommand{\arraystretch}{1.45}
+\noindent\begin{tabular}{@{}>{\bfseries}p{0.31\textwidth}p{0.63\textwidth}@{}}
+Modalidad: & [Modalidad de cursada o trabajo] \\
+Código: & [Código de materia / comisión] \\
+Informe: & [Tipo o número de informe] \\
+Presentación: & [Formato o instancia de presentación] \\
+Repositorio: & https://github.com/santiagoleguizamon10/TP-labo \\
+Entrega: & 6 de noviembre 2026 \\
+Integrantes: & Santiago Leguizamón, Salvador Lanus, Benjamin Aranda, Francisco Pando,
+Sebastián Chernomoretz \\
+Docente: &  Rita Beatriz Morrone , Juan Ignacio da Torre, Joaquin Romano Abou-Eid, Manuel Fernández San Martín, Santiago lucas garcia, Tadeo Rost Kain
+ \\
+\end{tabular}
+
+\vfill
+\begin{center}
+    {\large Período académico segundo cuatrimestre de 2026}
+\end{center}
+\clearpage
+
+% ESTRUCTURA DEL INFORME. Las extensiones son orientativas; ajustá el texto
+% para cumplir la consigna y reemplazá todos los marcadores entre corchetes.
+
+% 1. Resumen: entre 5 y 8 líneas.
+\section{Resumen}
+[En 5--8 líneas, sintetizá el objetivo del trabajo, la metodología empleada y los principales hallazgos. Completá los hallazgos una vez realizado el análisis.]
+
+% Extensión orientativa: media página.
+\section{Introducción}
+[Explicá la motivación del estudio y formulá la pregunta principal sobre la influencia de la localía en el fútbol argentino. Presentá brevemente el conjunto de datos utilizado y su fuente.]
+
+% Extensión orientativa: media página.
+\section{Datos y metodología}
+[Describí el conjunto de datos, sus variables y estructura; explicá las transformaciones realizadas y las herramientas utilizadas. Indicá cómo definiste o mediste la localía y qué resultados futbolísticos analizaste.]
+
+% Extensión orientativa: entre una y dos páginas.
+\section{Resultados}
+[Insertá los gráficos exportados desde Google Colab y las tablas pertinentes. Para cada elemento, explicá qué muestra y cómo responde a la pregunta principal. No olvides indicar la fuente de los datos.]
+
+% Ejemplo para incorporar una imagen: subí el archivo a Overleaf y quitá el símbolo %.
+% \begin{figure}[htbp]
+%   \centering
+%   \includegraphics[width=0.85\textwidth]{[nombre-del-grafico.png]}
+%   \caption{[Descripción del gráfico.]}
+%   \label{fig:resultado}
+% \end{figure}
+
+% Extensión orientativa: media página.
+\section{Conclusiones}
+[Resumí los hallazgos principales, señalá las limitaciones del análisis y proponé posibles extensiones.]
+
+% Extensión orientativa: un cuarto de página.
+\section{Reflexión metodológica}
+[Contá si se utilizó inteligencia artificial, para qué tareas y qué revisiones hicieron sobre sus respuestas. Comentá los aprendizajes del proceso y las decisiones metodológicas del grupo.]
+
+% Sección opcional. Si no van a incluir fuentes, eliminá esta sección.
+\section{Bibliografía (opcional)}
+[Agregá las fuentes utilizadas para contextualizar o interpretar los resultados: artículos, informes, notas o documentación del conjunto de datos. Usá el formato de cita solicitado por la cátedra.]
+\end{document}
