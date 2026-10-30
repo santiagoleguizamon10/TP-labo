@@ -118,4 +118,132 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "🔍 Ficha Individual"
 ])
 
-# --- PESTAÑA 1: OF
+# --- PESTAÑA 1: OFENSIVA ---
+with tab1:
+    st.subheader("Pérdida de Rendimiento Ofensivo al Jugar fuera de Casa")
+    col_a, col_b = st.columns(2)
+    
+    with col_a:
+        fig_xg = px.bar(
+            df_filtrado.sort_values("Caída xG", ascending=True),
+            x="Caída xG",
+            y="Club",
+            orientation="h",
+            title="Caída en Goles Esperados (xG Local − xG Visitante)",
+            color="Caída xG",
+            color_continuous_scale="Viridis",
+            text_auto=".2f"
+        )
+        st.plotly_chart(fig_xg, use_container_width=True)
+
+    with col_b:
+        fig_tiros = px.bar(
+            df_filtrado.sort_values("Caída Tiros", ascending=True),
+            x="Caída Tiros",
+            y="Club",
+            orientation="h",
+            title="Pérdida de Tiros al Arco Promedio",
+            color="Caída Tiros",
+            color_continuous_scale="Plasma",
+            text_auto=".2f"
+        )
+        st.plotly_chart(fig_tiros, use_container_width=True)
+
+    st.markdown("#### ⚖️ Dispersión: xG Local vs xG Visitante")
+    fig_scatter = px.scatter(
+        df_resumen,
+        x="xG_Visitante",
+        y="xG_Local",
+        text="Club",
+        size="Tamaño_Burbuja",
+        color="Caída xG",
+        color_continuous_scale="RdBu_r",
+        title="Comparativa xG (Puntos por encima de la línea indican fuerte dependencia de localía)",
+        labels={"xG_Visitante": "xG Promedio Visitante", "xG_Local": "xG Promedio Local"}
+    )
+    max_val = max(df_resumen["xG_Local"].max(), df_resumen["xG_Visitante"].max()) + 0.2
+    fig_scatter.add_shape(
+        type="line", line=dict(dash="dash", color="red", width=2),
+        x0=0, y0=0, x1=max_val, y1=max_val
+    )
+    fig_scatter.update_traces(textposition="top center", marker=dict(sizemin=8))
+    st.plotly_chart(fig_scatter, use_container_width=True)
+
+# --- PESTAÑA 2: DISCIPLINA ---
+with tab2:
+    st.subheader("Efecto de la Localía en el Criterio Disciplinario")
+    col_c, col_d = st.columns(2)
+    
+    with col_c:
+        fig_faltas = px.bar(
+            df_filtrado.sort_values("Dif Faltas", ascending=True),
+            x="Dif Faltas",
+            y="Club",
+            orientation="h",
+            title="Incremento de Faltas Cometidas de Visitante",
+            color="Dif Faltas",
+            color_continuous_scale="Reds",
+            text_auto=".2f"
+        )
+        st.plotly_chart(fig_faltas, use_container_width=True)
+        
+    with col_d:
+        fig_amarillas = px.bar(
+            df_filtrado.sort_values("Dif Amarillas", ascending=True),
+            x="Dif Amarillas",
+            y="Club",
+            orientation="h",
+            title="Tarjetas Amarillas Extra de Visitante",
+            color="Dif Amarillas",
+            color_continuous_scale="YlOrBr",
+            text_auto=".2f"
+        )
+        st.plotly_chart(fig_amarillas, use_container_width=True)
+
+# --- PESTAÑA 3: VALIDACIÓN ESTADÍSTICA ---
+with tab3:
+    st.subheader("🧪 Análisis de Significancia Estadística")
+    st.write("Evaluación de la brecha de localía sobre los partidos del torneo:")
+    
+    diferencias = df_partidos["Goles esperados (xG) (L)"] - df_partidos["Goles esperados (xG) (V)"]
+    diferencias = diferencias.dropna()
+    
+    media_diff = np.mean(diferencias)
+    std_diff = np.std(diferencias, ddof=1)
+    n = len(diferencias)
+    t_stat = media_diff / (std_diff / np.sqrt(n))
+    
+    col_stat1, col_stat2 = st.columns(2)
+    with col_stat1:
+        st.info(f"**Estadístico t (Emparejado):** {t_stat:.4f}")
+    with col_stat2:
+        st.success(f"**Diferencia Media de xG:** +{media_diff:.3f} xG a favor del Local (N = {n} partidos)")
+
+    st.markdown("---")
+    st.subheader("🔥 Matriz de Correlación de Métricas de Juego")
+    
+    cols_interes = [
+        "Goles esperados (xG) (L)", "Goles esperados (xG) (V)",
+        "Faltas (L)", "Faltas (V)",
+        "Tarjetas amarillas (L)", "Tarjetas amarillas (V)"
+    ]
+    df_corr = df_partidos[cols_interes].corr()
+    
+    fig_corr = px.imshow(
+        df_corr,
+        text_auto=".2f",
+        aspect="auto",
+        color_continuous_scale="Blues",
+        title="Correlación Lineal (Pearson) entre Variables"
+    )
+    st.plotly_chart(fig_corr, use_container_width=True)
+
+# --- PESTAÑA 4: DETALLE INDIVIDUAL ---
+with tab4:
+    st.subheader("🔍 Desglose Completo por Club")
+    if equipo_sel != "Todos los Clubes":
+        st.write(f"Métricas consolidadas para **{equipo_sel}**:")
+        st.dataframe(df_filtrado, use_container_width=True)
+    else:
+        st.info("💡 Seleccioná un club específico en la barra lateral para filtrarlo en la tabla.")
+        st.dataframe(df_resumen, use_container_width=True)
