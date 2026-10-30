@@ -17,19 +17,11 @@ st.write("Esta aplicación evalúa el rendimiento de los equipos jugando de loca
 # Carga de datos de los top equipos
 @st.cache_data
 def cargar_datos():
-    datos = [
-        {"Club": "Independiente Rivadavia", "Caída xG": 1.32, "Caída Tiros": 1.40},
-        {"Club": "Argentinos Juniors", "Caída xG": 1.04, "Caída Tiros": 3.22},
-        {"Club": "Gimnasia y Esgrima", "Caída xG": 1.04, "Caída Tiros": 1.98},
-        {"Club": "Huracán", "Caída xG": 0.91, "Caída Tiros": 2.17},
-        {"Club": "Estudiantes de La Plata", "Caída xG": 0.80, "Caída Tiros": 2.43},
-        {"Club": "Banfield", "Caída xG": 0.57, "Caída Tiros": 1.69},
-        {"Club": "Vélez Sarsfield", "Caída xG": 0.50, "Caída Tiros": 1.20},
-        {"Club": "Unión de Santa Fe", "Caída xG": 0.47, "Caída Tiros": 1.10},
-        {"Club": "Central Córdoba", "Caída xG": 0.43, "Caída Tiros": 1.95},
-        {"Club": "Gimnasia Mendoza", "Caída xG": 0.43, "Caída Tiros": 2.67}
-    ]
-    return pd.DataFrame(datos)
+    df = pd.read_csv("data/Clausura26_tp_labo.csv")
+    return df
+
+
+    
 
 df_resumen = cargar_datos()
 
