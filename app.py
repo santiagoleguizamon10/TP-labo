@@ -11,70 +11,83 @@ st.set_page_config(
 
 # Título y encabezado principal
 st.title("⚽ Análisis del Impacto de la Localía")
-st.markdown("### Torneo Clausura - Análisis de Producción Ofensiva")
+st.markdown("### Torneo Clausura – Análisis de Producción Ofensiva")
 st.write("Esta aplicación evalúa el rendimiento de los equipos jugando de local versus visitante, analizando la caída en **Goles Esperados (xG)** y **Tiros al Arco**.")
 
-# Carga de datos de los top equipos
+# Carga de datos
 @st.cache_data
-def cargar_datos():
+def cargar_y_procesar_datos():
     df = pd.read_csv("data/Clausura26_tp_labo.csv")
-    return df
-
-
     
+    # Rendimiento de Local por equipo
+    local_df = df.groupby("Local").agg(
+        xG_Local=("Goles esperados (xG) (L)", "mean"),
+        Tiros_Local=("Tiros al arco (L)", "mean")
+    ).reset_index().rename(columns={"Local": "Club"})
+    
+    # Rendimiento de Visitante por equipo
+    visit_df = df.groupby("Visitante").agg(
+        xG_Visitante=("Goles esperados (xG) (V)", "mean"),
+        Tiros_Visitante=("Tiros al arco (V)", "mean")
+    ).reset_index().rename(columns={"Visitante": "Club"})
+    
+    # Unir métricas y calcular caídas (Local - Visitante)
+    resumen = pd.merge(local_df, visit_df, on="Club")
+    resumen["Caída xG"] = resumen["xG_Local"] - resumen["xG_Visitante"]
+    resumen["Caída Tiros"] = resumen["Tiros_Local"] - resumen["Tiros_Visitante"]
+    
+    return resumen
 
-df_resumen = cargar_datos()
+df_resumen = cargar_y_procesar_datos()
+
+# Filtros en la barra lateral
+st.sidebar.header("Filtros")
+equipos = ["Todos"] + sorted(df_resumen["Club"].dropna().unique().tolist())
+equipo_sel = st.sidebar.selectbox("Seleccionar Club para Inspeccionar:", equipos)
+
+if equipo_sel != "Todos":
+    df_filtrado = df_resumen[df_resumen["Club"] == equipo_sel]
+else:
+    df_filtrado = df_resumen
 
 # Métricas destacadas en tarjetas superiores
+top_caida_xg = df_resumen.sort_values("Caída xG", ascending=False).iloc[0]
+top_caida_tiros = df_resumen.sort_values("Caída Tiros", ascending=False).iloc[0]
+prom_caida_xg = df_resumen["Caída xG"].mean()
+
 col1, col2, col3 = st.columns(3)
-col1.metric("Mayor Caída de xG", "Independiente Rivadavia", "-1.32 xG")
-col2.metric("Mayor Caída en Remates", "Argentinos Juniors", "-3.22 Tiros")
-col3.metric("Promedio General Caída xG", "0.75 xG", "Local vs Visitante")
+col1.metric("Mayor Caída de xG", top_caida_xg["Club"], f"-{top_caida_xg['Caída xG']:.2f} xG")
+col2.metric("Mayor Caída en Remates", top_caida_tiros["Club"], f"-{top_caida_tiros['Caída Tiros']:.2f} Tiros")
+col3.metric("Promedio General Caída xG", f"{prom_caida_xg:.2f} xG", "Local vs Visitante")
 
 st.markdown("---")
-
-# Sección de Gráficos Interactivos con Plotly
 st.subheader("📊 Equipos Más Afectados al Jugar de Visitante")
 
-col_chart1, col_chart2 = st.columns(2)
+col_left, col_right = st.columns(2)
 
-with col_chart1:
+with col_left:
     fig_xg = px.bar(
-        df_resumen.sort_values("Caída xG", ascending=True),
+        df_filtrado.sort_values("Caída xG", ascending=True),
         x="Caída xG",
         y="Club",
-        orientation='h',
+        orientation="h",
         title="Caída Promedio de Goles Esperados (xG)",
-        labels={"Caída xG": "Caída de xG (Local − Visitante)"},
+        labels={"Caída xG": "Caída de xG (Local − Visitante)", "Club": "Club"},
         color="Caída xG",
         color_continuous_scale="Blues"
     )
     st.plotly_chart(fig_xg, use_container_width=True)
 
-with col_chart2:
+with col_right:
     fig_tiros = px.bar(
-        df_resumen.sort_values("Caída Tiros", ascending=True),
+        df_filtrado.sort_values("Caída Tiros", ascending=True),
         x="Caída Tiros",
         y="Club",
-        orientation='h',
+        orientation="h",
         title="Caída Promedio de Tiros al Arco",
-        labels={"Caída Tiros": "Caída de Remates a Puerta"},
+        labels={"Caída Tiros": "Caída de Remates al Arco", "Club": "Club"},
         color="Caída Tiros",
         color_continuous_scale="Oranges"
     )
     st.plotly_chart(fig_tiros, use_container_width=True)
-
-# Filtro interactivo en la barra lateral
-st.sidebar.header("🔍 Filtros")
-club_seleccionado = st.sidebar.selectbox(
-    "Seleccionar Club para Inspeccionar:", 
-    ["Todos"] + list(df_resumen["Club"])
-)
-
-if club_seleccionado != "Todos":
-    st.markdown(f"### Detalle de **{club_seleccionado}**")
-    df_club = df_resumen[df_resumen["Club"] == club_seleccionado]
-    st.dataframe(df_club, use_container_width=True)
-else:
-    st.markdown("### Tabla Completa de Resultados")
-    st.dataframe(df_resumen, use_container_width=True)
+    
