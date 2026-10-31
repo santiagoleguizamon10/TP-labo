@@ -1,0 +1,137 @@
+\documentclass[12pt,a4paper]{article}
+
+% Plantilla académica para Overleaf. Compilar con pdfLaTeX.
+% Reemplazá los textos entre corchetes por los datos de tu trabajo.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3cm,right=3cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue,citecolor=black}
+\setlength{\parindent}{1.0cm}
+\setlength{\parskip}{0.25em}
+\onehalfspacing
+\setlist{topsep=0.2em,itemsep=0.2em}
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection.}{0.4em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{0.4em}{}
+\titlespacing*{\section}{0pt}{1.4em}{0.4em}
+
+% Editá estos datos para completar la portada.
+\newcommand{\institucion}{Universidad de Buenos Aires}
+\newcommand{\facultad}{Facultad de Ciencias Económicas}
+\newcommand{\carrera}{Tecnicatura Universitaria en Gestión y Análisis de Datos en Organizaciones}
+\newcommand{\tituloTrabajo}{Trabajo Práctico Grupal}
+\newcommand{\subtituloTrabajo}{La influencia de la localía en el fútbol argentino}
+
+\begin{document}
+
+% PORTADA
+\thispagestyle{empty}
+\begin{center}
+    {\large\bfseries \institucion}\\[0.25em]
+    {\large \facultad}\\[0.25em]
+    {\normalsize \carrera}
+\end{center}
+
+\vspace{1.4cm}
+\noindent\rule{\textwidth}{0.7pt}
+
+\vspace{1.5cm}
+\begin{center}
+    {\LARGE\bfseries \tituloTrabajo}\\[0.8em]
+    {\large \subtituloTrabajo}
+\end{center}
+
+\vspace{1.4cm}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.5em}
+
+% Reemplazá cada valor entre corchetes. Agregá o quitá filas si hace falta.
+\renewcommand{\arraystretch}{1.45}
+\noindent\begin{tabular}{@{}>{\bfseries}p{0.31\textwidth}p{0.63\textwidth}@{}}
+Modalidad: & Hibrida (presencial virtual) \\
+Comisión: & 1 \\
+Informe: & Informe grupal de análisis de datos. \\
+Presentación: & Presentación oral grupal con apoyo de diapositivas. \\
+Repositorio: & https://github.com/santiagoleguizamon10/TP-labo \\
+Entrega: & 6 de noviembre 2026 \\
+Integrantes: & Santiago Leguizamón, Salvador Lanus, Benjamin Aranda, Francisco Pando,
+Sebastián Chernomoretz \\
+Docente: &  Rita Beatriz Morrone , Juan Ignacio da Torre, Joaquin Romano Abou-Eid, Manuel Fernández San Martín, Santiago lucas garcia, Tadeo Rost Kain
+ \\
+\end{tabular}
+
+\vfill
+\begin{center}
+    {\large Período académico segundo cuatrimestre de 2026}
+\end{center}
+\clearpage
+
+% ESTRUCTURA DEL INFORME. Las extensiones son orientativas; ajustá el texto
+% para cumplir la consigna y reemplazá todos los marcadores entre corchetes.
+
+% 1. Resumen: entre 5 y 8 líneas.
+\section{Resumen}
+ Este trabajo analiza cómo varía el rendimiento de los equipos argentinos según jueguen de local o de visitante durante el Torneo Clausura 2026. A partir de los datos de los partidos, se estudian la distribución de victorias, empates y derrotas; los puntos obtenidos; la producción ofensiva —goles, xG y tiros al arco—; la posesión; las faltas y tarjetas; y las diferencias de rendimiento entre clubes. El análisis se realizó en Python con datos organizados por partido y condición de juego, y se presentó mediante gráficos comparativos. El objetivo es identificar si existe una ventaja general asociada a la localía, en qué indicadores se observa y cómo varía entre equipos. Las conclusiones se limitan a las tendencias registradas en el conjunto de datos y no establecen relaciones causales.
+
+
+% Extensión orientativa: media página.
+\section{Introducción}
+En el fútbol, la condición de local suele considerarse un factor que puede influir en el rendimiento de los equipos. Sin embargo, esa posible ventaja puede manifestarse de distintas maneras: en la distribución de victorias, empates y derrotas; en la generación de ocasiones de gol; en el control de la pelota; en el desempeño disciplinario; y en las diferencias de rendimiento entre clubes. Analizar estas dimensiones permite estudiar la localía con mayor amplitud que una simple comparación de resultados.
+
+Este trabajo práctico busca responder la pregunta: ¿cómo varía el rendimiento de los equipos argentinos cuando juegan de local con respecto a su desempeño como visitantes durante el Torneo Clausura 2026? Para abordarla, se examinan los partidos del torneo mediante cinco ejes. Primero, se analiza la distribución general de victorias locales, empates y victorias visitantes, junto con los puntos obtenidos en cada condición. Luego, se comparan la producción ofensiva y la generación de peligro a través de los goles esperados (xG), los goles reales y los tiros al arco. También se estudia la relación entre posesión, diferencia de goles y resultados, para observar si controlar más la pelota se asocia con un mejor desempeño.
+
+Además, el informe explora las faltas y tarjetas para comparar el comportamiento disciplinario de locales y visitantes, y analiza el rendimiento de cada club según la condición de juego. Este último eje permite identificar qué equipos aprovechan más la localía y cuáles mantienen o reducen su rendimiento cuando juegan fuera de su estadio.
+
+En conjunto, estos análisis buscan determinar si los datos muestran una ventaja cuantitativa general de jugar de local, en qué aspectos se expresa y si se presenta de manera similar en todos los equipos. Las conclusiones se limitan a las variables disponibles y a los partidos incluidos en el dataset del torneo.
+
+% Extensión orientativa: media página.
+\section{Datos y metodología}
+El análisis se realizó sobre un data set armado con un scrapper de sofascore, que reúne información de los partidos del Torneo Clausura 2026 hasta la fecha numero 13. Cada fila representa un partido e incluye su fecha, los equipos que jugaron como local y visitante, y distintas estadísticas separadas según la condición de juego. Entre las variables disponibles se encuentran los goles , la posesión, los goles esperados (xG), los tiros totales, los tiros al arco, los córners, las faltas y las tarjetas amarillas y rojas.
+
+El procesamiento se realizó en Python, en un notebook de Google Colab, utilizando principalmente las bibliotecas pandas para cargar, organizar y resumir los datos, y matplotlib para elaborar los gráficos. Primero se exploró la estructura del archivo, los tipos de datos y la presencia de valores nulos. Cuando fue necesario, las columnas se convirtieron a un formato numérico para poder calcular promedios, diferencias y agregaciones.
+
+La localía se definió a partir de las columnas identificadas con (L) para el equipo local y (V) para el visitante. Para comparar el rendimiento de los equipos, se calcularon resultados y puntos por partido: tres puntos por una victoria, uno por un empate y cero por una derrota. También se clasificaron los partidos como victoria local, empate o victoria visitante, y se calcularon sus proporciones sobre el total analizado.
+
+El rendimiento ofensivo se estudió comparando los goles reales, los goles esperados (xG) y los tiros al arco de locales y visitantes. Para el análisis por club, los datos de cada partido se reorganizaron en registros por equipo y condición —local o visitante—, lo que permitió calcular totales, promedios y partidos disputados. Las diferencias entre los promedios locales y visitantes se utilizaron para observar cambios en la producción ofensiva al jugar fuera de casa.
+
+El control del juego se analizó mediante la posesión. Se consideraron su relación con los resultados, los puntos obtenidos y la diferencia de goles. Para ello, la posesión debía tratarse como una variable numérica y, si estaba expresada como porcentaje en formato de texto, convertirse antes del análisis.
+
+El aspecto disciplinario se examinó comparando faltas y tarjetas de locales y visitantes. Se calcularon totales y, cuando los datos lo permitieron, ratios entre tarjetas y faltas, además de observar su comportamiento según el resultado del partido. Finalmente, el efecto de la localía por club se evaluó comparando los puntos o promedios de rendimiento de cada equipo en ambas condiciones, para identificar cuáles mostraron una mayor diferencia entre su desempeño en casa y como visitantes.
+
+Los resultados se presentan mediante gráficos de distribución y comparación, como barras para los resultados y las métricas ofensivas, gráficos de relación entre posesión y diferencia de goles, comparaciones disciplinarias y rankings por club. Las conclusiones describen los patrones observados en el dataset; por sí solos, estos análisis no permiten establecer que la condición de local sea la causa de las diferencias.
+
+% Extensión orientativa: entre una y dos páginas.
+\section{Resultados}
+[Insertá los gráficos exportados desde Google Colab y las tablas pertinentes. Para cada elemento, explicá qué muestra y cómo responde a la pregunta principal. No olvides indicar la fuente de los datos.]
+
+% Ejemplo para incorporar una imagen: subí el archivo a Overleaf y quitá el símbolo %.
+% \begin{figure}[htbp]
+%   \centering
+%   \includegraphics[width=0.85\textwidth]{[nombre-del-grafico.png]}
+%   \caption{[Descripción del gráfico.]}
+%   \label{fig:resultado}
+% \end{figure}
+
+% Extensión orientativa: media página.
+\section{Conclusiones}
+[Resumí los hallazgos principales, señalá las limitaciones del análisis y proponé posibles extensiones.]
+
+% Extensión orientativa: un cuarto de página.
+\section{Reflexión metodológica}
+[Contá si se utilizó inteligencia artificial, para qué tareas y qué revisiones hicieron sobre sus respuestas. Comentá los aprendizajes del proceso y las decisiones metodológicas del grupo.]
+
+% Sección opcional. Si no van a incluir fuentes, eliminá esta sección.
+\section{Bibliografía (opcional)}
+[Agregá las fuentes utilizadas para contextualizar o interpretar los resultados: artículos, informes, notas o documentación del conjunto de datos. Usá el formato de cita solicitado por la cátedra.]
+\end{document}
