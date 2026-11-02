@@ -68,7 +68,12 @@ def cargar_y_procesar_datos():
 
 df_partidos, df_resumen = cargar_y_procesar_datos()
 
-# 3. Barra Lateral (Filtros)
+# 3. Barra Lateral (Filtros ha Ta'anga)
+try:
+    st.sidebar.image("portada.jpg", use_container_width=True)
+except Exception:
+    pass
+
 st.sidebar.title("Panel de Control")
 st.sidebar.markdown("---")
 
