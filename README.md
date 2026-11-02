@@ -12,4 +12,4 @@ Trabajo practico sobre la influencia de la localia en el futbol argentino
 
 -Sebastián Chernomoretz: cherno559
 
-Link de pagina: https://tp-labo-ejqglaysyihph3aripatsw.streamlit.app
+Link de pagina: https://tp-labo-rywmz63ckfbkd3h4cuhk5z.streamlit.app/
